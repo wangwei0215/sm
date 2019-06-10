@@ -61,6 +61,19 @@ public class BirthDateTimeServiceImpl extends BaseHibernateAutoServiceSupport<Bi
 
 	}
 	//自行添加自定义业务方法
+	public List<Map<String, Object>> findBirthDateTimeHaul(BirthDateTime content){
+
+		StringBuffer sql = new StringBuffer();
+		sql.append(" SELECT a.id,a.sex,a.year,a.day,a.month,a.hour FROM tb_birth_date_time a left join tb_haul b on a.id=b.birth_date_time_id WHERE 1=1 and b.birth_date_time_id is null");
+		sql.append(V.isNotEmpty(content.getYear()) ? " and a.`year`='" + content.getYear() + "'" : "");
+		sql.append(V.isNotEmpty(content.getSex()) ? " and a.`sex`='" + content.getSex() + "'" : "");
+		sql.append(V.isNotEmpty(content.getMonth()) ? " and a.`month`='" + content.getMonth() + "'" : "");
+		sql.append(V.isNotEmpty(content.getDay()) ? " and a.`day`='" + content.getDay() + "'" : "");
+		sql.append(V.isNotEmpty(content.getDay()) ? " and a.`hour`='" + content.getHour() + "'" : "");
+		return this.querySQL(sql.toString());
+
+	}
+	//自行添加自定义业务方法
 	public void deleteById(BirthDateTime content){
 		StringBuffer sql = new StringBuffer();
 		sql.append("DELETE FROM tb_birth_date_time WHERE id='" + content.getId() + "'");
