@@ -8,6 +8,8 @@ import org.iframework.commons.domain.order.OrderImpl;
 import org.iframework.commons.domain.pager.Pager;
 import org.iframework.commons.domain.pager.PagerImpl;
 import org.iframework.support.spring.context.BaseSpringContextSupport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,11 +27,13 @@ import java.util.concurrent.TimeUnit;
 @Controller
 @RequestMapping("/birth")
 public class BirthController extends BaseController{
+	Logger logger = LoggerFactory.getLogger(BirthController.class);
+
 	@RequestMapping(value = "list", method = { RequestMethod.POST, RequestMethod.GET })
 	public void list(HttpServletRequest request, final HttpServletResponse response, Birth birth) throws Exception {
-		System.out.print("list。。。");
-		Map<String, Object> map = new HashMap<String, Object>();
 
+		logger.debug("Enter method BirthController list().");
+		Map<String, Object> map = new HashMap<>();
 		if (birth.getMonth() == 0) {
 			map.put("CODE","CIP999999");
 			map.put("msg","请选择月份!");
@@ -55,8 +59,8 @@ public class BirthController extends BaseController{
 	}
 
 	@RequestMapping(value = "fortuneTellers", method = { RequestMethod.POST, RequestMethod.GET })
-	public void fortuneTellers(HttpServletRequest request, final HttpServletResponse response) throws Exception {
-
+	public void fortuneTellers(final HttpServletResponse response) throws Exception {
+		logger.debug("Enter method BirthController fortuneTellers().");
 		BlockingQueue<Runnable> queue = new ArrayBlockingQueue<>(10);
 		ThreadPoolExecutor pool = new ThreadPoolExecutor(10, 20, 60, TimeUnit.MICROSECONDS, queue);
 
@@ -65,7 +69,7 @@ public class BirthController extends BaseController{
 			pool.execute(thread);
 		}
 
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 		map.put("CODE","CIP000000");
 		map.put("msg","数据同步成功");
 		print(response,map);
