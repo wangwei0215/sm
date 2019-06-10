@@ -8,6 +8,8 @@ import org.iframework.commons.domain.order.OrderImpl;
 import org.iframework.commons.domain.pager.Pager;
 import org.iframework.commons.domain.pager.PagerImpl;
 import org.iframework.support.spring.context.BaseSpringContextSupport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,11 +29,12 @@ import java.util.concurrent.TimeUnit;
 @Controller
 @RequestMapping("/pair")
 public class PairController extends BaseController{
+	Logger logger = LoggerFactory.getLogger(BirthController.class);
+
 	@RequestMapping(value = "list", method = { RequestMethod.POST, RequestMethod.GET })
 	public void list(HttpServletRequest request, final HttpServletResponse response, Pair pair) throws Exception {
 
-
-		System.out.print("list。。。");
+		logger.info("Enter method PairController list().");
 		Map<String, Object> map = new HashMap<String, Object>();
 		if (StringUtils.isEmpty(pair.getZodiac1()) || StringUtils.isEmpty(pair.getZodiac2())) {
 			map.put("CODE","CIP999999");
@@ -52,9 +55,8 @@ public class PairController extends BaseController{
 
 	@RequestMapping(value = "fortuneTellers", method = { RequestMethod.POST, RequestMethod.GET })
 	public void fortuneTellers(HttpServletRequest request, final HttpServletResponse response) throws Exception {
-
+		logger.info("Enter method PairController fortuneTellers().");
 		Map<String, Object> map = new HashMap<String, Object>();
-
 		BlockingQueue<Runnable> queue = new ArrayBlockingQueue<>(10);
 		ThreadPoolExecutor pool = new ThreadPoolExecutor(10, 20, 60, TimeUnit.MICROSECONDS, queue);
 		List<String> datas = new ArrayList<>();

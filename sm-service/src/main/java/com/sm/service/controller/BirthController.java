@@ -32,7 +32,7 @@ public class BirthController extends BaseController{
 	@RequestMapping(value = "list", method = { RequestMethod.POST, RequestMethod.GET })
 	public void list(HttpServletRequest request, final HttpServletResponse response, Birth birth) throws Exception {
 
-		logger.debug("Enter method BirthController list().");
+		logger.info("Enter method BirthController list().");
 		Map<String, Object> map = new HashMap<>();
 		if (birth.getMonth() == 0) {
 			map.put("CODE","CIP999999");
@@ -60,7 +60,7 @@ public class BirthController extends BaseController{
 
 	@RequestMapping(value = "fortuneTellers", method = { RequestMethod.POST, RequestMethod.GET })
 	public void fortuneTellers(final HttpServletResponse response) throws Exception {
-		logger.debug("Enter method BirthController fortuneTellers().");
+		logger.info("Enter method BirthController fortuneTellers().");
 		BlockingQueue<Runnable> queue = new ArrayBlockingQueue<>(10);
 		ThreadPoolExecutor pool = new ThreadPoolExecutor(10, 20, 60, TimeUnit.MICROSECONDS, queue);
 
