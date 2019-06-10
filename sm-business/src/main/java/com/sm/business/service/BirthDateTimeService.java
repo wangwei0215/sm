@@ -22,6 +22,8 @@ public interface BirthDateTimeService extends IBaseHibernateAutoServiceSupport<B
     public List<Map<String, Object>> findContent(BirthDateTime content);
     //自行添加自定义业务接口方法
     public List<Map<String, Object>> findBirthDateTime(BirthDateTime content);
+    //自行添加自定义业务接口方法
+    public List<Map<String, Object>> findBirthDateTimeHaul(BirthDateTime content);
     public void deleteById(BirthDateTime content);
 }
 
