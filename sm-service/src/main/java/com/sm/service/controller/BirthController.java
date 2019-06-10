@@ -3,16 +3,17 @@ package com.sm.service.controller;
 import com.sm.business.model.Birth;
 import com.sm.business.service.BirthService;
 import com.sm.service.function.BirthdayThread;
-import net.sf.json.JSONObject;
+import org.iframework.commons.domain.order.Order;
+import org.iframework.commons.domain.order.OrderImpl;
+import org.iframework.commons.domain.pager.Pager;
+import org.iframework.commons.domain.pager.PagerImpl;
 import org.iframework.support.spring.context.BaseSpringContextSupport;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,24 +24,38 @@ import java.util.concurrent.TimeUnit;
 
 @Controller
 @RequestMapping("/birth")
-public class BirthController {
+public class BirthController extends BaseController{
 	@RequestMapping(value = "list", method = { RequestMethod.POST, RequestMethod.GET })
-	public void list(HttpServletRequest request, final HttpServletResponse response, Birth birth) throws ServletException, IOException {
+	public void list(HttpServletRequest request, final HttpServletResponse response, Birth birth) throws Exception {
 		System.out.print("list。。。");
-		BirthService birthService = (BirthService) BaseSpringContextSupport.getApplicationContext().getBean("birthService");
-		// Birth model, Order order, Pager pager
-		List<Birth> births = birthService.findByModel(birth, null, null);
 		Map<String, Object> map = new HashMap<String, Object>();
+
+		if (birth.getMonth() == 0) {
+			map.put("CODE","CIP999999");
+			map.put("msg","请选择月份!");
+			print(response,map);
+			return;
+		}
+
+		if (birth.getDay() == 0) {
+			map.put("CODE","CIP999999");
+			map.put("msg","请选择日期!");
+			print(response,map);
+			return;
+		}
+
+		BirthService birthService = (BirthService) BaseSpringContextSupport.getApplicationContext().getBean("birthService");
+		Pager pager = new PagerImpl(request);
+		Order order = new OrderImpl(request);
+		List<Birth> births = birthService.findByModel(birth, order, pager);
+		map.put("CODE","CIP000000");
+		map.put("msg","查询结果");
 		map.put("data",births);
-		JSONObject json = JSONObject.fromObject(map);
-		String result = "showData" + "(" + json.toString() + ")";
-		response.setCharacterEncoding("UTF-8");
-		response.setContentType("text/html;charset=UTF-8");
-		response.getWriter().write(result);
+		print(response,map);
 	}
 
 	@RequestMapping(value = "fortuneTellers", method = { RequestMethod.POST, RequestMethod.GET })
-	public void fortuneTellers(HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+	public void fortuneTellers(HttpServletRequest request, final HttpServletResponse response) throws Exception {
 
 		BlockingQueue<Runnable> queue = new ArrayBlockingQueue<>(10);
 		ThreadPoolExecutor pool = new ThreadPoolExecutor(10, 20, 60, TimeUnit.MICROSECONDS, queue);
@@ -50,7 +65,9 @@ public class BirthController {
 			pool.execute(thread);
 		}
 
-		response.getWriter().write("成功");
-		System.out.print("结束fortuneTellers。。。");
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("CODE","CIP000000");
+		map.put("msg","数据同步成功");
+		print(response,map);
 	}
 }
