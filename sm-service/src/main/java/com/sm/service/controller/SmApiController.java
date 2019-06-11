@@ -4,18 +4,15 @@ import com.sm.business.model.BirthDateTime;
 import com.sm.business.service.BirthDateTimeService;
 import com.sm.service.function.BrithQueryUtil;
 
-import net.sf.json.JSONObject;
+import com.sm.service.util.CommonUtils;
 
-import org.iframework.commons.util.fast.L;
 import org.iframework.support.spring.context.BaseSpringContextSupport;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +26,7 @@ import java.util.Map;
 @RequestMapping("/smapi")
 public class SmApiController {
 	@RequestMapping(value = "fortuneTellers", method = { RequestMethod.POST, RequestMethod.GET })
-	public void fortuneTellers(HttpServletRequest request, final HttpServletResponse response, BirthDateTime content) throws ServletException, IOException {
+	public void fortuneTellers(HttpServletRequest request, final HttpServletResponse response, BirthDateTime content) throws Exception {
 		System.out.print("进入fortuneTellers。。。");
 		BirthDateTimeService birthDateTimeService = (BirthDateTimeService) BaseSpringContextSupport.getApplicationContext().getBean("birthDateTimeService");
 		List<Map<String, Object>> contentList=birthDateTimeService.findContent(content);
@@ -50,11 +47,6 @@ public class SmApiController {
 		}
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("data",con);
-		JSONObject json = JSONObject.fromObject(map);
-		String result = "showData" + "(" + json.toString() + ")";
-		response.setCharacterEncoding("UTF-8");
-		response.setContentType("text/html;charset=UTF-8");
-		response.getWriter().write(result);
-		System.out.print("结束fortuneTellers。。。"+result);
+		CommonUtils.print(response,map);
 	}
 }

@@ -1,4 +1,4 @@
-package com.sm.service.function;
+package com.sm.service.util;
 
 import net.sf.json.JSONObject;
 
