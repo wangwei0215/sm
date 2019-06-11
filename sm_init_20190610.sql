@@ -57,3 +57,53 @@ CREATE TABLE `td_pair` (
   KEY `zodiac_index` (`zodiac1`,`zodiac2`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
+CREATE TABLE
+    tb_birth_date_time
+    (
+        id INT(10) unsigned NOT NULL AUTO_INCREMENT,
+        sex INT(1) NOT NULL COMMENT '性别',
+        YEAR INT(4) NOT NULL COMMENT '年份',
+        DAY INT(2) NOT NULL COMMENT '月份',
+        MONTH INT(2) NOT NULL COMMENT '日',
+        hour VARCHAR(20) NOT NULL COMMENT '小时',
+        createTime DATETIME COMMENT '创建时间',
+        updateTimes DATETIME COMMENT '更新时间',
+        state VARCHAR(32) DEFAULT 'AVAILABLE' COMMENT '记录状态（可用AVAILABLE删除DELETE禁用FORBID）',
+        versions bigint DEFAULT 0 COMMENT '版本号',
+        PRIMARY KEY (id),
+        INDEX index_YEAR (YEAR),
+        INDEX index_DAY (DAY),
+        INDEX index_MONTH (MONTH),
+        INDEX index_hour (hour)
+    )
+    ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+    CREATE TABLE
+    tb_fate
+    (
+        id INT(10) unsigned NOT NULL AUTO_INCREMENT,
+        birth_date_time_id INT(10) COMMENT '人员id',
+        content text COMMENT '内容',
+        createTime DATETIME COMMENT '创建时间',
+        updateTimes DATETIME COMMENT '更新时间',
+        state VARCHAR(32) DEFAULT 'AVAILABLE' COMMENT '记录状态（可用AVAILABLE删除DELETE禁用FORBID）',
+        versions bigint DEFAULT 0 COMMENT '版本号',
+        PRIMARY KEY (id),
+        INDEX index_birth_date_time_id (birth_date_time_id)
+    )
+    ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+    CREATE TABLE
+    tb_haul
+    (
+        id INT(10) unsigned NOT NULL AUTO_INCREMENT,
+        birth_date_time_id INT(10) COMMENT '人员id',
+        content text COMMENT '内容',
+        createTime DATETIME COMMENT '创建时间',
+        updateTimes DATETIME COMMENT '更新时间',
+        state VARCHAR(32) DEFAULT 'AVAILABLE' COMMENT '记录状态（可用AVAILABLE删除DELETE禁用FORBID）',
+        versions bigint DEFAULT 0 COMMENT '版本号',
+        PRIMARY KEY (id),
+        INDEX index_birth_date_time_id (birth_date_time_id)
+    )
+    ENGINE=InnoDB DEFAULT CHARSET=utf8;
