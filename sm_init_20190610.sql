@@ -22,3 +22,38 @@ CREATE TABLE `tb_cgsm` (
   KEY `index_hour` (`hour`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '称骨算命表';
 
+
+/*Table structure for table `td_birth` */
+
+DROP TABLE IF EXISTS `td_birth`;
+
+CREATE TABLE `td_birth` (
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+  `month` INT(11) NOT NULL,
+  `day` INT(11) NOT NULL,
+  `content` TEXT,
+  `createTime` DATETIME DEFAULT NULL,
+  `updateTimes` DATETIME DEFAULT NULL,
+  `state` VARCHAR(32) DEFAULT 'AVAILABLE',
+  `versions` BIGINT(20) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `month_day_index` (`month`,`day`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8;
+
+/*Table structure for table `td_pair` */
+
+DROP TABLE IF EXISTS `td_pair`;
+
+CREATE TABLE `td_pair` (
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+  `zodiac1` CHAR(2) NOT NULL,
+  `zodiac2` CHAR(2) NOT NULL,
+  `content` TEXT,
+  `createTime` DATETIME DEFAULT NULL,
+  `updateTimes` DATETIME DEFAULT NULL,
+  `state` VARCHAR(32) DEFAULT 'AVAILABLE',
+  `versions` BIGINT(20) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `zodiac_index` (`zodiac1`,`zodiac2`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8;
+
