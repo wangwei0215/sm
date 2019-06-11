@@ -5,6 +5,7 @@ import com.sm.business.service.BirthDateTimeService;
 import com.sm.service.function.BaZiTask;
 import com.sm.service.function.BaZiQuery;
 import com.sm.service.util.CommonUtils;
+import org.iframework.commons.util.fast.V;
 import org.iframework.support.spring.context.BaseSpringContextSupport;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,7 +34,12 @@ public class BaZiApiController {
 	//提供给前端的api
 	@RequestMapping(value = "fortuneTellers", method = { RequestMethod.POST, RequestMethod.GET })
 	public void fortuneTellers(HttpServletRequest request, final HttpServletResponse response, BirthDateTime content) throws Exception {
-		System.out.print("进入fortuneTellers。。。");
+		Map<String, Object> map = new HashMap<String, Object>();
+		if(V.isEmpty(content) || V.isEmpty(content.getYear()) || V.isEmpty(content.getMonth()) || V.isEmpty(content.getDay()) || V.isEmpty(content.getHour())) {
+			map.put("data","请检查参数，缺一不可！");
+			CommonUtils.print(response,map);
+			return;
+		}
 		BirthDateTimeService birthDateTimeService = (BirthDateTimeService) BaseSpringContextSupport.getApplicationContext().getBean("birthDateTimeService");
 		List<Map<String, Object>> contentList=birthDateTimeService.findContent(content);
 		String con="日期不存在";
@@ -48,7 +54,7 @@ public class BaZiApiController {
 		if(sex==0){//0女1男
 			con=CommonUtils.replace(con);
 		}
-		Map<String, Object> map = new HashMap<String, Object>();
+
 		map.put("data",con);
 		CommonUtils.print(response,map);
 	}
@@ -62,8 +68,6 @@ public class BaZiApiController {
 			Runnable task = new BaZiTask(i);
 			pool.execute(task);
 		}
-		response.getWriter().write("成功");
-		System.out.print("结束fortuneTellers。。。");
 	}
 	//单个爬出对应的值
 	@RequestMapping(value = "single", method = { RequestMethod.POST, RequestMethod.GET })
@@ -77,6 +81,5 @@ public class BaZiApiController {
 				birthDateTimeService.delete(list);//删除主表信息
 			}
 		}
-		System.out.print("结束fortuneTellers。。。"+contentList.size());
 	}
 }

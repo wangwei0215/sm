@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
  * 
  */
 @Controller
-@RequestMapping("/Haulapi")
+@RequestMapping("/haulapi")
 public class HaulApiController {
 	//提供给前端的api
 	@RequestMapping(value = "fortuneTellers", method = { RequestMethod.POST, RequestMethod.GET })
