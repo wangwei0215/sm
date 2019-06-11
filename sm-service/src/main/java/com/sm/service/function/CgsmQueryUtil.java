@@ -3,6 +3,7 @@ package com.sm.service.function;
 import java.io.IOException;
 
 import org.iframework.commons.util.fast.L;
+import org.iframework.support.spring.context.BaseSpringContextSupport;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -14,6 +15,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlSelect;
 import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
 import com.sm.business.model.Cgsm;
+import com.sm.business.service.CgsmService;
 
 /**
  * 测骨算命 Created by sh on 2019/06/20.
@@ -28,10 +30,10 @@ public class CgsmQueryUtil {
 		// 19:00-19:59","戌 20:00-20:59","亥 21:00-21:59","亥 22:00-22:59","子
 		// 23:00-23:59"};
 		// System.out.println("当前开始时间"+new Date());
+		L.i("入参年："+cgsm.getYear() + " 入参月："+cgsm.getMonth()+ " 入参日："+cgsm.getDay() + " 入参小时："+cgsm.getHour()  );
 		String cont = "";
 		try {
-			// CgsmService cgSmSercice = (CgsmService)
-			// BaseSpringContextSupport.getApplicationContext().getBean("cgsmService");
+			 CgsmService cgSmSercice = (CgsmService)BaseSpringContextSupport.getApplicationContext().getBean("cgsmService");
 			// 得到浏览器对象，直接New一个就能得到，现在就好比说你得到了一个浏览器了
 			WebClient webclient = new WebClient();
 
@@ -71,23 +73,16 @@ public class CgsmQueryUtil {
 				tagElement.getElementsByTag("p").last().remove();
 				cont = tagElement.toString().replace(" ", "").replace("\n", "").replace("</div>", "")
 						.replace("<divclass=\"content\">", "").replace("<aname=\"csshow\"></a>", "");
+				
 				L.i(cont);
 				// 入库
-				// Fate fate=new Fate();
-				// fate.setBirthDateTimeId(cgsm.getId());
-				// fate.setContent(cont);
-				// cgSmSercice.save(fate);
+				cgsm.setContent(cont);
+				cgSmSercice.save(cgsm);
 			} else {
 				// cont="日期不存在";
 				// System.out.println("日期不存在！"+content.getYear()+content.getMonth()+content.getDay());
 			}
 
-			// }
-			// }
-			// }
-
-			// }
-			// }
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (FailingHttpStatusCodeException e) {
@@ -96,13 +91,26 @@ public class CgsmQueryUtil {
 		return cont;
 	}
 
-	public static void main(String[] args) {
-		Cgsm cgsm = new Cgsm();
-		cgsm.setYear(6);
-		cgsm.setMonth(6);
-		cgsm.setDay(5);
-		cgsm.setHour("16");
-		CgsmQueryUtil.getContent(cgsm);
-	}
+//	public static void main(String[] args) {
+//		Integer[] year = {5,6,7,8,9,10,11,12,13,14,15,16};
+//		Integer[] month = {5,6,7,8,9,15,16,18};
+//		Integer[] day = {5,6,7,8,9,10,15,16,17,18};
+//		Integer[] hour = {5,6,7,8,9,10,16};
+//		for (int i = 0; i < year.length; i++) {
+//			for (int j = 0; j < month.length; j++) {
+//				for (int j2 = 0; j2 < day.length; j2++) {
+//					for (int k = 0; k < hour.length; k++) {
+//						Cgsm cgsm = new Cgsm();
+//						cgsm.setYear(year[i]);
+//						cgsm.setMonth(month[j]);
+//						cgsm.setDay(day[j2]);
+//						cgsm.setHour(String.valueOf(hour[k]));
+//						CgsmQueryUtil.getContent(cgsm);
+//					}
+//				}
+//			}
+//		}
+//		
+//	}
 
 }
