@@ -1,4 +1,4 @@
-package com.sm.service.function;
+package com.sm.service.util;
 
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;

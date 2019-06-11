@@ -1,7 +1,7 @@
 package com.sm.service.controller;
 
 import com.sm.service.function.PhoneUtil;
-import org.apache.commons.lang.StringUtils;
+import com.sm.service.util.CommonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 
 @Controller
 @RequestMapping("/phone")
-public class PhoneController extends BaseController{
+public class PhoneController {
 
 	private Logger logger = LoggerFactory.getLogger(PhoneController.class);
 
@@ -27,11 +27,11 @@ public class PhoneController extends BaseController{
 			result.put("CODE","CIP000000");
 			result.put("MSG","请检查手机号");
 			result.put("data","");
-			print(response,result);
+			CommonUtils.print(response,result);
 			return;
 		}
 		result = PhoneUtil.getResult(phone);
-		print(response,result);
+		CommonUtils.print(response,result);
 	}
 
 }

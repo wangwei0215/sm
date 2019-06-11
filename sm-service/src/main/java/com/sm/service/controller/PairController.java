@@ -3,6 +3,7 @@ package com.sm.service.controller;
 import com.sm.business.model.Pair;
 import com.sm.business.service.PairService;
 import com.sm.service.function.PairThread;
+import com.sm.service.util.CommonUtils;
 import org.iframework.commons.domain.order.Order;
 import org.iframework.commons.domain.order.OrderImpl;
 import org.iframework.commons.domain.pager.Pager;
@@ -26,7 +27,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/pair")
-public class PairController extends BaseController{
+public class PairController{
 	@Resource
 	private ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
@@ -40,7 +41,7 @@ public class PairController extends BaseController{
 		if (StringUtils.isEmpty(pair.getZodiac1()) || StringUtils.isEmpty(pair.getZodiac2())) {
 			map.put("CODE","CIP999999");
 			map.put("msg","请选择生肖!");
-			print(response,map);
+			CommonUtils.print(response,map);
 			return;
 		}
 		PairService pairService = (PairService) BaseSpringContextSupport.getApplicationContext().getBean("pairService");
@@ -50,7 +51,7 @@ public class PairController extends BaseController{
 		map.put("CODE","CIP000000");
 		map.put("msg","查询结果");
 		map.put("data",pairs);
-		print(response,map);
+		CommonUtils.print(response,map);
 	}
 
 	@RequestMapping(value = "fortuneTellers", method = { RequestMethod.POST, RequestMethod.GET })
@@ -76,6 +77,6 @@ public class PairController extends BaseController{
 		}
 		map.put("CODE","CIP000000");
 		map.put("msg","数据同步成功");
-		print(response,map);
+		CommonUtils.print(response,map);
 	}
 }

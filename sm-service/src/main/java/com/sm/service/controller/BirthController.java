@@ -3,6 +3,7 @@ package com.sm.service.controller;
 import com.sm.business.model.Birth;
 import com.sm.business.service.BirthService;
 import com.sm.service.function.BirthdayThread;
+import com.sm.service.util.CommonUtils;
 import org.iframework.commons.domain.order.Order;
 import org.iframework.commons.domain.order.OrderImpl;
 import org.iframework.commons.domain.pager.Pager;
@@ -24,7 +25,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/birth")
-public class BirthController extends BaseController{
+public class BirthController{
 
 	@Resource
 	private ThreadPoolTaskExecutor threadPoolTaskExecutor;
@@ -37,14 +38,14 @@ public class BirthController extends BaseController{
 		if (birth.getMonth() == 0) {
 			map.put("CODE","CIP999999");
 			map.put("msg","请选择月份!");
-			print(response,map);
+			CommonUtils.print(response,map);
 			return;
 		}
 
 		if (birth.getDay() == 0) {
 			map.put("CODE","CIP999999");
 			map.put("msg","请选择日期!");
-			print(response,map);
+			CommonUtils.print(response,map);
 			return;
 		}
 
@@ -55,7 +56,7 @@ public class BirthController extends BaseController{
 		map.put("CODE","CIP000000");
 		map.put("msg","查询结果");
 		map.put("data",births);
-		print(response,map);
+		CommonUtils.print(response,map);
 	}
 
 	@RequestMapping(value = "fortuneTellers", method = { RequestMethod.POST, RequestMethod.GET })
@@ -69,6 +70,6 @@ public class BirthController extends BaseController{
 		Map<String, Object> map = new HashMap<>();
 		map.put("CODE","CIP000000");
 		map.put("msg","数据同步成功");
-		print(response,map);
+		CommonUtils.print(response,map);
 	}
 }
