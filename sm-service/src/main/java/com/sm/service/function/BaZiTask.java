@@ -12,9 +12,9 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by liguangcun on 2019/6/3.
  */
-public class CustomTask implements Runnable{
+public class BaZiTask implements Runnable{
     private  int id;
-    public CustomTask(int id) {
+    public BaZiTask(int id) {
         this.id = id;
     }
 
@@ -33,7 +33,7 @@ public class CustomTask implements Runnable{
             list.setDay(Integer.valueOf(map.get("day").toString()));
             list.setHour(map.get("hour").toString());
             list.setSex(1);
-            String con=BrithQueryUtil.getBrith(list);
+            String con= BaZiQuery.getBrith(list);
             if("日期不存在".equals(con)) {
                 birthDateTimeService.deleteById(list);//删除主表信息
             }

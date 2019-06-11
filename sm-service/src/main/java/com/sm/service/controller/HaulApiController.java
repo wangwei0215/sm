@@ -2,9 +2,8 @@ package com.sm.service.controller;
 
 import com.sm.business.model.BirthDateTime;
 import com.sm.business.service.BirthDateTimeService;
-import com.sm.service.function.BrithQueryUtil;
-import com.sm.service.function.CustomTask;
-import com.sm.service.function.HaulQueryUtil;
+import com.sm.service.function.BaZiQuery;
+import com.sm.service.function.HaulQuery;
 import com.sm.service.function.HaulTask;
 import com.sm.service.util.CommonUtils;
 import org.iframework.support.spring.context.BaseSpringContextSupport;
@@ -30,7 +29,7 @@ import java.util.concurrent.TimeUnit;
  * 
  */
 @Controller
-@RequestMapping("/smapi")
+@RequestMapping("/Haulapi")
 public class HaulApiController {
 	//提供给前端的api
 	@RequestMapping(value = "fortuneTellers", method = { RequestMethod.POST, RequestMethod.GET })
@@ -45,7 +44,7 @@ public class HaulApiController {
 		}else{
 			content.setSex(1);//男女结果一样，只保存男
 			birthDateTimeService.save(content);
- 			con=BrithQueryUtil.getBrith(content);
+ 			con= BaZiQuery.getBrith(content);
 		}
 		if(sex==0){//0女1男
 			con=CommonUtils.replace(con);
@@ -74,7 +73,7 @@ public class HaulApiController {
 		BirthDateTimeService birthDateTimeService = (BirthDateTimeService) BaseSpringContextSupport.getApplicationContext().getBean("birthDateTimeService");
 		List<BirthDateTime> contentList=birthDateTimeService.findByModel(content,null,null);
 		for(BirthDateTime list:contentList){
-			String con= HaulQueryUtil.getBrith(list);
+			String con= HaulQuery.getBrith(list);
 			if("日期不存在".equals(con)) {
 				birthDateTimeService.delete(list);//删除主表信息
 			}
