@@ -49,7 +49,7 @@ public class HaulApiController {
 		if(sex==0){//0女1男
 			con=CommonUtils.replace(con);
 		}
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("data",con);
 		CommonUtils.print(response,map);
 	}
