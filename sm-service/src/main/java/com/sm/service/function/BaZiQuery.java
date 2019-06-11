@@ -7,6 +7,7 @@ import com.sm.business.model.BirthDateTime;
 import com.sm.business.model.Fate;
 import com.sm.business.service.FateService;
 
+import com.sm.service.util.WebClientUtil;
 import org.iframework.support.spring.context.BaseSpringContextSupport;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
