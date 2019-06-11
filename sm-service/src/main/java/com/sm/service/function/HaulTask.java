@@ -32,7 +32,7 @@ public class HaulTask implements Runnable{
             list.setDay(Integer.valueOf(map.get("day").toString()));
             list.setHour(map.get("hour").toString());
             list.setSex(1);
-            String con=HaulQueryUtil.getBrith(list);
+            String con= HaulQuery.getBrith(list);
             if("日期不存在".equals(con)) {
                 birthDateTimeService.deleteById(list);//删除主表信息
             }
