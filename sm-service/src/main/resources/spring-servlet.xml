@@ -22,5 +22,4 @@
         <property name="maxInMemorySize" value="40960" />
     </bean>
 	<import resource="classpath*:spring-freemarker.xml" />
-	
 </beans>

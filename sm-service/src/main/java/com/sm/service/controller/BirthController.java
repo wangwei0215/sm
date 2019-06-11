@@ -10,29 +10,29 @@ import org.iframework.commons.domain.pager.PagerImpl;
 import org.iframework.support.spring.context.BaseSpringContextSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 @Controller
 @RequestMapping("/birth")
 public class BirthController extends BaseController{
-	Logger logger = LoggerFactory.getLogger(BirthController.class);
+
+	@Resource
+	private ThreadPoolTaskExecutor threadPoolTaskExecutor;
+
+	private Logger logger = LoggerFactory.getLogger(BirthController.class);
 
 	@RequestMapping(value = "list", method = { RequestMethod.POST, RequestMethod.GET })
 	public void list(HttpServletRequest request, final HttpServletResponse response, Birth birth) throws Exception {
-
-		logger.info("Enter method BirthController list().");
 		Map<String, Object> map = new HashMap<>();
 		if (birth.getMonth() == 0) {
 			map.put("CODE","CIP999999");
@@ -61,12 +61,9 @@ public class BirthController extends BaseController{
 	@RequestMapping(value = "fortuneTellers", method = { RequestMethod.POST, RequestMethod.GET })
 	public void fortuneTellers(final HttpServletResponse response) throws Exception {
 		logger.info("Enter method BirthController fortuneTellers().");
-		BlockingQueue<Runnable> queue = new ArrayBlockingQueue<>(10);
-		ThreadPoolExecutor pool = new ThreadPoolExecutor(10, 20, 60, TimeUnit.MICROSECONDS, queue);
-
 		for (int i = 0; i < 12; i ++) {
 			BirthdayThread thread = new BirthdayThread(i);
-			pool.execute(thread);
+			threadPoolTaskExecutor.execute(thread);
 		}
 
 		Map<String, Object> map = new HashMap<>();

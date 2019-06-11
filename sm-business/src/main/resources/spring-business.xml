@@ -19,6 +19,6 @@
 	<import resource="classpath*:spring-config.xml" />
 	<import resource="classpath*:spring-hibernate.xml" />
 	<import resource="classpath*:spring-plugin.xml" />
-	
+	<import resource="classpath:/pool.xml"/>
 	
 </beans>

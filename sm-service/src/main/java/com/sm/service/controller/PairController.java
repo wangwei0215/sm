@@ -10,26 +10,27 @@ import org.iframework.commons.domain.pager.PagerImpl;
 import org.iframework.support.spring.context.BaseSpringContextSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 @Controller
 @RequestMapping("/pair")
 public class PairController extends BaseController{
-	Logger logger = LoggerFactory.getLogger(BirthController.class);
+	@Resource
+	private ThreadPoolTaskExecutor threadPoolTaskExecutor;
+
+	private Logger logger = LoggerFactory.getLogger(BirthController.class);
 
 	@RequestMapping(value = "list", method = { RequestMethod.POST, RequestMethod.GET })
 	public void list(HttpServletRequest request, final HttpServletResponse response, Pair pair) throws Exception {
@@ -57,8 +58,6 @@ public class PairController extends BaseController{
 	public void fortuneTellers(HttpServletRequest request, final HttpServletResponse response) throws Exception {
 		logger.info("Enter method PairController fortuneTellers().");
 		Map<String, Object> map = new HashMap<String, Object>();
-		BlockingQueue<Runnable> queue = new ArrayBlockingQueue<>(10);
-		ThreadPoolExecutor pool = new ThreadPoolExecutor(10, 20, 60, TimeUnit.MICROSECONDS, queue);
 		List<String> datas = new ArrayList<>();
 		datas.add("鼠");
 		datas.add("牛");
@@ -74,7 +73,7 @@ public class PairController extends BaseController{
 		datas.add("猪");
 		for (int i = 0; i < datas.size(); i ++) {
 			PairThread thread = new PairThread(datas.get(i), i, datas);
-			pool.execute(thread);
+			threadPoolTaskExecutor.execute(thread);
 		}
 		map.put("CODE","CIP000000");
 		map.put("msg","数据同步成功");
