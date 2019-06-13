@@ -12,13 +12,10 @@ import org.jsoup.nodes.Element;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class PairThread implements Runnable {
 
-    private Map<String, Integer> params = new HashMap<>();
     private List<String> datas = new ArrayList<>();
     private String key;
     private int index;
