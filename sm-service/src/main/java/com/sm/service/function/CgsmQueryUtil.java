@@ -1,8 +1,10 @@
 package com.sm.service.function;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.iframework.commons.util.fast.L;
+import org.iframework.commons.util.fast.V;
 import org.iframework.support.spring.context.BaseSpringContextSupport;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -21,17 +23,17 @@ import com.sm.business.service.CgsmService;
  * 测骨算命 Created by sh on 2019/06/20.
  */
 public class CgsmQueryUtil {
+	
 	public static String getContent(Cgsm cgsm) {
-		// String[] str={"子 00:00-00:59","丑 01:00-01:59","丑 02:00-02:59","寅
-		// 03:00-03:59","寅 04:00-04:59","卯 05:00-05:59","卯 06:00-06:59","辰
-		// 07:00-07:59","辰 08:00-08:59","巳 09:00-09:59","巳 10:00-10:59","午
-		// 11:00-11:59","午 12:00-12:59","未 13:00-13:59","未 14:00-14:59","申
-		// 15:00-15:59","申 16:00-16:59","酉 17:00-17:59","酉 18:00-18:59","戌
-		// 19:00-19:59","戌 20:00-20:59","亥 21:00-21:59","亥 22:00-22:59","子
-		// 23:00-23:59"};
-		// System.out.println("当前开始时间"+new Date());
+		
 		L.i("入参年："+cgsm.getYear() + " 入参月："+cgsm.getMonth()+ " 入参日："+cgsm.getDay() + " 入参小时："+cgsm.getHour()  );
 		String cont = "";
+		CgsmService cgsmService = (CgsmService) BaseSpringContextSupport.getApplicationContext().getBean("cgsmService");
+		//存在，不用再爬取
+		List<Cgsm> findByModel = cgsmService.findByModel(cgsm, null, null);
+		if(V.isNotEmpty(findByModel)){
+			return findByModel.get(0).getContent();
+		}
 		try {
 			 CgsmService cgSmSercice = (CgsmService)BaseSpringContextSupport.getApplicationContext().getBean("cgsmService");
 			// 得到浏览器对象，直接New一个就能得到，现在就好比说你得到了一个浏览器了
@@ -76,6 +78,7 @@ public class CgsmQueryUtil {
 				
 				L.i(cont);
 				// 入库
+				
 				cgsm.setContent(cont);
 				cgSmSercice.save(cgsm);
 			} else {

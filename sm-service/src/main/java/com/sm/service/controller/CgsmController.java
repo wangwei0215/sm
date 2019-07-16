@@ -45,6 +45,12 @@ public class CgsmController extends BaseWebControllerSupport {
 			renderJson(new JsonResultModel(StatusCode.FAILURE.getDesc(), "缺少必填参数").toJsonString(), response);
 		}
 		List<Cgsm> findByModel = cgsmService.findByModel(cgsm, null, null);
+		//如果数据库查出的结果为空，去网页爬取，并入库
+		if(V.isEmpty(findByModel)){
+			CgsmQueryUtil.getContent(cgsm);
+			findByModel = cgsmService.findByModel(cgsm, null, null);
+		}
+		
 		renderJson(new JsonResultModel(StatusCode.SUCCESS.getDesc(), "成功",findByModel).toJsonString(), response);
 	}
 	
